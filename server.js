@@ -23,12 +23,35 @@ require("dotenv").config();
 
 const jwtkey = process.env.jwtkey;
 
+const createAdminUser = async () => {
+    try {
+        const existingAdmin = await adminregmodel.findOne({ role: "admin" });
+        if (!existingAdmin) {
+            const hashedPassword = await bcrypt.hash("Admin@4077", 10); // Secure default password
+            const adminUser = new adminregmodel({
+                name: "Admin User",
+                email: "Admin4077@gmail.com",
+                password: hashedPassword,
+                role: "admin"
+            });
+            await adminUser.save();
+            console.log("Admin user created successfully.");
+        } else {
+            console.log("Admin user already exists. Skipping creation.");
+        }
+    } catch (error) {
+        console.error("Error creating admin user:", error);
+    }
+};
+
 mongoose.set("strictQuery", false);
 
 mongoose.connect(process.env.mongoUrl, {
     useNewUrlParser: true
-}).then(() => { console.log("Connected to database"); })
-    .catch(e => console.log(e));
+}).then(() => {
+    console.log("Connected to database");
+    createAdminUser();
+}).catch(e => console.log(e));
 
 const conn = mongoose.createConnection(process.env.mongoUrl);
 
