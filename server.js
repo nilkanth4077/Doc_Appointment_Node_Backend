@@ -80,6 +80,26 @@ app.use(cors({
 //     })
 // })
 
+app.post("/addSpeciality", async (req, res) => {
+    const { speciality } = req.body;
+    try {
+        const oldSpeciality = await docSpecialityModel.findOne({ speciality });
+        console.log(oldSpeciality);
+        if (oldSpeciality) {
+            //console.log("Speciality already exists");
+            res.json({ message: "Exists" });
+        }
+        else {
+            await docSpecialityModel.create({
+                speciality,
+            });
+            res.json({ message: "ok" });
+        }
+    } catch (error) {
+        res.json({ message: "error" });
+    }
+});
+
 app.get('/getSpeciality', async (req, res) => {
     // var docSpeciality = new docSpecialityModel({
     //     speciality: "Radiologist",
