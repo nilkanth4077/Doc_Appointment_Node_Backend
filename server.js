@@ -677,7 +677,7 @@ app.post("/getpdf", async (req, res) => {
     if (user) {
         //serverclose();
         console.log("getpdf callled");
-        var url = "http://localhost:8080/readpdf";
+        var url = "https://doc-appointment-node-backend.onrender.com/readpdf";
         request(url, (error, res, body) => {
 
             if (error) console.log(error)
